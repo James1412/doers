@@ -21,3 +21,19 @@ Map<int, String> months = {
   11: "Nov",
   12: "Dec",
 };
+
+String getDate(DateTime dateTime) {
+  if (isDateToday(dateTime)) {
+    return "${months[dateTime.month]} ${dateTime.day} (${weekdays[dateTime.weekday]}) • Today";
+  }
+  return "${months[dateTime.month]} ${dateTime.day} (${weekdays[dateTime.weekday]})";
+}
+
+bool isDateToday(DateTime dateTime) {
+  if (DateTime(dateTime.year, dateTime.month, dateTime.day) ==
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)) {
+    return true;
+  } else {
+    return false;
+  }
+}
