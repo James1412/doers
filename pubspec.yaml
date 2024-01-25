@@ -36,7 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.6
   like_button: ^2.0.4
   animated_line_through: ^1.0.4
+  flutter_slidable: ^3.0.1
   dotted_border: ^2.1.0
+  vibration: ^1.8.4
 
 dev_dependencies:
   flutter_test:

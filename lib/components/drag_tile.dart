@@ -1,6 +1,24 @@
+import 'dart:io';
+
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:like_button/like_button.dart';
+import 'package:vibration/vibration.dart';
+
+Future<bool> onCheckTap(value, isSelected) async {
+  //Vibration
+  if (Platform.isAndroid) {
+    if (await Vibration.hasVibrator() != null &&
+        await Vibration.hasVibrator() == true) {
+      Vibration.vibrate(duration: 100);
+    }
+  } else if (Platform.isIOS) {
+    HapticFeedback.mediumImpact();
+  }
+  isSelected.value = !isSelected.value;
+  return isSelected.value;
+}
 
 Widget dragTile(ValueNotifier<bool> isSelected, String i) {
   return ValueListenableBuilder(
@@ -14,10 +32,7 @@ Widget dragTile(ValueNotifier<bool> isSelected, String i) {
         height: 40,
         child: LikeButton(
           isLiked: isSelected.value,
-          onTap: (value) async {
-            isSelected.value = !isSelected.value;
-            return isSelected.value;
-          },
+          onTap: (value) => onCheckTap(value, isSelected),
           animationDuration: const Duration(milliseconds: 700),
           likeBuilder: (isLiked) {
             return Icon(
@@ -35,7 +50,7 @@ Widget dragTile(ValueNotifier<bool> isSelected, String i) {
         child: Text(
           i,
           style: const TextStyle(
-            fontSize: 17,
+            fontSize: 15,
           ),
         ),
       ),
