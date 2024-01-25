@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class DateTile extends StatefulWidget {
-  final List<DateTileModel> dateList;
   final DateTileModel dateTile;
   final Function onAccept;
   final Function getDate;
@@ -19,7 +18,6 @@ class DateTile extends StatefulWidget {
       required this.onAccept,
       required this.getDate,
       required this.onDragComplete,
-      required this.dateList,
       required this.isDateToday,
       required this.removeDate});
 
@@ -131,7 +129,9 @@ class _DateTileState extends State<DateTile> {
                                 SlidableAction(
                                   backgroundColor: Colors.orange,
                                   foregroundColor: Colors.white,
-                                  onPressed: (value) {},
+                                  onPressed: (value) {
+                                    //TODO: show dialog to edit
+                                  },
                                   icon: Icons.edit,
                                 ),
                                 SlidableAction(
@@ -166,7 +166,7 @@ class _DateTileState extends State<DateTile> {
                     setState(() {
                       widget.dateTile.events.add(ToDoTileModel(
                           isEditing: ValueNotifier(true),
-                          date: DateTime.now(),
+                          date: widget.dateTile.date,
                           text: '',
                           isChecked: ValueNotifier(false)));
                     });

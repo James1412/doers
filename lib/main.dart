@@ -1,9 +1,20 @@
+import 'package:doers/providers/date_list_provider.dart';
 import 'package:doers/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const DoersApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => DateListProvider(),
+        )
+      ],
+      child: const DoersApp(),
+    ),
+  );
 }
 
 class DoersApp extends StatelessWidget {
