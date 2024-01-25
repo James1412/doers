@@ -1,4 +1,6 @@
 import 'package:doers/components/drag_tile.dart';
+import 'package:doers/models/todo_tile_model.dart';
+import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -10,38 +12,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List items = [
-    '1',
-    '1',
-    '1',
-    '1',
+  List<ToDoTileModel> todoList = [
+    ToDoTileModel(
+        date: DateTime.now(), text: 'hi', isChecked: ValueNotifier(false)),
+    ToDoTileModel(
+        date: DateTime.now(), text: 'hi', isChecked: ValueNotifier(false)),
+    ToDoTileModel(
+        date: DateTime.now(), text: 'hi', isChecked: ValueNotifier(false)),
+    ToDoTileModel(
+        date: DateTime.now(), text: 'hi', isChecked: ValueNotifier(false)),
   ];
-  Map<int, String> weekdays = {
-    1: "Mon",
-    2: "Tue",
-    3: "Wed",
-    4: "Thu",
-    5: "Fri",
-    6: "Sat",
-    7: "Sun",
-  };
-  late Map<int, String> months = {
-    1: "Jan",
-    2: "Feb",
-    3: "Mar",
-    4: "Apr",
-    5: "May",
-    6: "June",
-    7: "Jul",
-    8: "Aug",
-    9: "Sep",
-    10: "Oct",
-    11: "Nov",
-    12: "Dec",
-  };
-  bool showItems = false;
 
-  ValueNotifier<bool> isSelected = ValueNotifier(false);
+  bool showItems = false;
 
   String getDate(DateTime dateTime) {
     if (DateTime(dateTime.year, dateTime.month, dateTime.day) ==
@@ -72,7 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
             DragTarget(
               onAcceptWithDetails: (data) {
                 // TODO: if item is already in the day, don't add again
-                items.add('added');
+                todoList.add(ToDoTileModel(
+                    date: DateTime.now(),
+                    text: 'added',
+                    isChecked: ValueNotifier(false)));
                 setState(() {});
               },
               builder: (context, candidateData, rejectedData) {
@@ -90,20 +75,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     children: [
-                      for (var i in items)
+                      for (var todoItem in todoList)
                         LongPressDraggable(
                           axis: Axis.vertical,
-                          data: i,
+                          data: todoItem,
                           // feedback shows widget when dragging
-                          feedback: Opacity(
-                            opacity: 0.8,
-                            child: Container(
-                              color: Colors.grey,
-                              width: double.maxFinite,
-                              height: 70,
-                              child: Material(
-                                child: dragTile(isSelected, i),
-                              ),
+                          feedback: SizedBox(
+                            width: double.maxFinite,
+                            height: 50,
+                            child: Material(
+                              elevation: 5,
+                              shadowColor: Colors.black,
+                              child: dragTile(todoItem.isChecked, todoItem.text,
+                                  Colors.grey.withOpacity(0.5)),
                             ),
                           ),
                           child: Slidable(
@@ -124,14 +108,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                            child: dragTile(isSelected, i),
+                            child: dragTile(todoItem.isChecked, todoItem.text,
+                                Colors.white),
                           ),
                         ),
                       // Add List Tile
                       InkWell(
                         onTap: () {
                           setState(() {
-                            items.add("");
+                            todoList.add(ToDoTileModel(
+                                date: DateTime.now(),
+                                text: '',
+                                isChecked: ValueNotifier(false)));
                           });
                         },
                         child: const ListTile(
@@ -149,10 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             DragTarget(
-              onAcceptWithDetails: (data) {
-                items.add('akdf');
-                setState(() {});
-              },
+              onAcceptWithDetails: (data) {},
               builder: (context, candidateData, rejectedData) {
                 return Opacity(
                   opacity: candidateData.isNotEmpty ? 0.5 : 1,
@@ -167,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     children: [
-                      for (var i in items) dragTile(isSelected, i),
+                      for (var todoItem in todoList)
+                        dragTile(
+                            todoItem.isChecked, todoItem.text, Colors.white),
                     ],
                   ),
                 );

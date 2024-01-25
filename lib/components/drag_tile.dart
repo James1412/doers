@@ -20,12 +20,12 @@ Future<bool> onCheckTap(value, isSelected) async {
   return isSelected.value;
 }
 
-Widget dragTile(ValueNotifier<bool> isSelected, String i) {
+Widget dragTile(ValueNotifier<bool> isSelected, String i, Color tileColor) {
   return ValueListenableBuilder(
     valueListenable: isSelected,
     builder: (context, value, child) => ListTile(
       dense: true,
-      tileColor: Colors.white,
+      tileColor: tileColor,
       horizontalTitleGap: BorderSide.strokeAlignCenter,
       leading: SizedBox(
         width: 40,
