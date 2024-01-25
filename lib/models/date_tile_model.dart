@@ -1,6 +1,8 @@
-class DateTileModel {
-  int index;
-  DateTime date;
+import 'package:doers/models/todo_tile_model.dart';
 
-  DateTileModel({required this.date, required this.index});
+class DateTileModel {
+  DateTime date;
+  List<ToDoTileModel> events;
+
+  DateTileModel({required this.date, required this.events});
 }
