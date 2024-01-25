@@ -1,8 +1,6 @@
-import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/components/drag_tile.dart';
-import 'package:doers/components/proxy_decoration.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:like_button/like_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -46,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
   bool showItems = false;
 
   ValueNotifier<bool> isSelected = ValueNotifier(false);
-  late String todayDate =
-      "${DateTime.now().year} ${months[DateTime.now().month]} ${DateTime.now().day} ${weekdays[DateTime.now().weekday]}";
+
+  String getDate(int x) {
+    return "${DateTime.now().year} ${months[DateTime.now().month]} ${DateTime.now().day + x} ${weekdays[DateTime.now().weekday + x]}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
             ),
             ExpansionTile(
+              initiallyExpanded: true,
+              iconColor: Colors.transparent,
               shape: const BeveledRectangleBorder(),
               title: Text(
-                todayDate,
+                getDate(0),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -69,22 +71,43 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               children: [
                 for (var i in items)
-                  LongPressDraggable(
-                    data: i,
+                  Dismissible(
                     key: UniqueKey(),
-                    feedback: Opacity(
-                      opacity: 0.8,
-                      child: Container(
-                        color: Colors.grey,
-                        width: double.maxFinite,
-                        height: 70,
-                        child: Material(
-                          child: dragTile(isSelected, i),
+                    onDismissed: (value) {
+                      items.remove(i);
+                      setState(() {});
+                    },
+                    child: LongPressDraggable(
+                      data: i,
+                      feedback: Opacity(
+                        opacity: 0.8,
+                        child: Container(
+                          color: Colors.grey,
+                          width: double.maxFinite,
+                          height: 70,
+                          child: Material(
+                            child: dragTile(isSelected, i),
+                          ),
                         ),
                       ),
+                      child: dragTile(isSelected, i),
                     ),
-                    child: dragTile(isSelected, i),
                   ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      items.add("");
+                    });
+                  },
+                  child: const ListTile(
+                    dense: true,
+                    title: Icon(Icons.add),
+                    subtitle: Text(
+                      "Add new task or event",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
               ],
             ),
             DragTarget(
@@ -95,9 +118,9 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, candidateData, rejectedData) {
                 return ExpansionTile(
                   shape: const BeveledRectangleBorder(),
-                  title: const Text(
-                    "tmr",
-                    style: TextStyle(
+                  title: Text(
+                    getDate(1),
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
                     ),
@@ -116,6 +139,19 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+        ],
       ),
     );
   }
