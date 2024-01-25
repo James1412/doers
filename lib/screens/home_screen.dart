@@ -150,51 +150,73 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         children: [
-                          for (ToDoTileModel event in dateTile.events)
-                            LongPressDraggable(
-                              onDragCompleted: () =>
-                                  onDragComplete(dateTile, event),
-                              axis: Axis.vertical,
-                              data: event,
-                              // feedback shows widget when dragging
-                              feedback: SizedBox(
-                                width: double.maxFinite,
-                                height: 50,
-                                child: Material(
-                                  shadowColor: Colors.black,
-                                  child: dragTile(event.isChecked, event.text,
-                                      Colors.grey.withOpacity(0.5)),
-                                ),
-                              ),
-                              // regular child when not dragged
-                              child: Slidable(
-                                key: UniqueKey(),
-                                endActionPane: ActionPane(
-                                  motion: const DrawerMotion(),
-                                  children: [
-                                    SlidableAction(
-                                      backgroundColor: Colors.orange,
-                                      foregroundColor: Colors.white,
-                                      onPressed: (value) {},
-                                      icon: Icons.edit,
+                          ReorderableListView(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            onReorder: (int oldIndex, int newIndex) {
+                              setState(() {
+                                if (oldIndex < newIndex) {
+                                  newIndex -= 1;
+                                }
+                                final item = dateTile.events.removeAt(oldIndex);
+                                dateTile.events.insert(newIndex, item);
+                              });
+                            },
+                            children: [
+                              for (ToDoTileModel event in dateTile.events)
+                                LongPressDraggable(
+                                  key: UniqueKey(),
+                                  onDragCompleted: () =>
+                                      onDragComplete(dateTile, event),
+                                  axis: Axis.vertical,
+                                  data: event,
+                                  // feedback shows widget when dragging
+                                  feedback: SizedBox(
+                                    width: double.maxFinite,
+                                    height: 50,
+                                    child: Material(
+                                      shadowColor: Colors.black,
+                                      child: dragTile(
+                                          event.isChecked,
+                                          event.text,
+                                          Colors.grey.withOpacity(0.5),
+                                          dateTile.events.indexOf(event)),
                                     ),
-                                    SlidableAction(
-                                      backgroundColor: Colors.red,
-                                      onPressed: (value) {
-                                        setState(() {
-                                          dateTile.events.remove(event);
-                                        });
-                                      },
-                                      icon: Icons.delete,
+                                  ),
+                                  // regular child when not dragged
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                      motion: const DrawerMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          backgroundColor: Colors.orange,
+                                          foregroundColor: Colors.white,
+                                          onPressed: (value) {},
+                                          icon: Icons.edit,
+                                        ),
+                                        SlidableAction(
+                                          backgroundColor: Colors.red,
+                                          onPressed: (value) {
+                                            setState(() {
+                                              dateTile.events.remove(event);
+                                            });
+                                          },
+                                          icon: Icons.delete,
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                    child: dragTile(
+                                        event.isChecked,
+                                        event.text,
+                                        Colors.white,
+                                        dateTile.events.indexOf(event)),
+                                  ),
                                 ),
-                                child: dragTile(
-                                    event.isChecked, event.text, Colors.white),
-                              ),
-                            ),
+                            ],
+                          ),
                           // Add List Tile
                           InkWell(
+                            key: UniqueKey(),
                             onTap: () {
                               setState(() {
                                 dateTile.events.add(ToDoTileModel(

@@ -20,7 +20,8 @@ Future<bool> onCheckTap(value, isSelected) async {
   return isSelected.value;
 }
 
-Widget dragTile(ValueNotifier<bool> isSelected, String i, Color tileColor) {
+Widget dragTile(
+    ValueNotifier<bool> isSelected, String i, Color tileColor, index) {
   return ValueListenableBuilder(
     valueListenable: isSelected,
     builder: (context, value, child) => ListTile(
@@ -53,6 +54,10 @@ Widget dragTile(ValueNotifier<bool> isSelected, String i, Color tileColor) {
             fontSize: 15,
           ),
         ),
+      ),
+      trailing: ReorderableDragStartListener(
+        index: index,
+        child: const Icon(Icons.drag_handle),
       ),
     ),
   );
