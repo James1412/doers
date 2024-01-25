@@ -107,7 +107,7 @@ class _NewBottomSheetState extends State<NewBottomSheet> {
                             minimumDate: DateTime.now(),
                             onDateTimeChanged: (date) =>
                                 widget.onDateTimeChanged(date),
-                            mode: CupertinoDatePickerMode.date,
+                            mode: CupertinoDatePickerMode.dateAndTime,
                             showDayOfWeek: true,
                           ),
                         ),

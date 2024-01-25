@@ -1,5 +1,6 @@
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
+import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 
 class DateListProvider extends ChangeNotifier {
@@ -9,22 +10,22 @@ class DateListProvider extends ChangeNotifier {
       events: [
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now(),
+            date: currentDay,
             text: 'hi',
             isChecked: ValueNotifier(false)),
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now(),
+            date: currentDay,
             text: 'hi',
             isChecked: ValueNotifier(false)),
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now(),
+            date: currentDay,
             text: 'hi',
             isChecked: ValueNotifier(false)),
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now(),
+            date: currentDay,
             text: 'hi',
             isChecked: ValueNotifier(false)),
       ],
@@ -34,22 +35,22 @@ class DateListProvider extends ChangeNotifier {
       events: [
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now().add(const Duration(days: 1)),
+            date: currentDay.add(const Duration(days: 1)),
             text: 'hi2',
             isChecked: ValueNotifier(false)),
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now().add(const Duration(days: 1)),
+            date: currentDay.add(const Duration(days: 1)),
             text: 'hi2',
             isChecked: ValueNotifier(false)),
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now().add(const Duration(days: 1)),
+            date: currentDay.add(const Duration(days: 1)),
             text: 'hi2',
             isChecked: ValueNotifier(false)),
         ToDoTileModel(
             isEditing: ValueNotifier(false),
-            date: DateTime.now().add(const Duration(days: 1)),
+            date: currentDay.add(const Duration(days: 1)),
             text: 'hi2',
             isChecked: ValueNotifier(false)),
       ],

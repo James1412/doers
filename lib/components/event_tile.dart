@@ -4,14 +4,16 @@ import 'dart:io';
 
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/models/date_tile_model.dart';
+import 'package:doers/models/todo_tile_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:vibration/vibration.dart';
 
 class EventTile extends StatefulWidget {
   final ValueNotifier<bool> isSelected;
-  String text;
+  ToDoTileModel event;
   final Color tileColor;
   final int index;
   final ValueNotifier<bool> isEditing;
@@ -21,7 +23,7 @@ class EventTile extends StatefulWidget {
   EventTile(
       {super.key,
       required this.isSelected,
-      required this.text,
+      required this.event,
       required this.tileColor,
       required this.index,
       required this.isEditing,
@@ -95,12 +97,13 @@ class _EventTileState extends State<EventTile> {
                   isCrossed: widget.isSelected.value,
                   duration: const Duration(milliseconds: 100),
                   child: Text(
-                    widget.text,
+                    widget.event.text,
                     style: const TextStyle(
                       fontSize: 15,
                     ),
                   ),
                 ),
+          subtitle: Text(DateFormat.jm().format(widget.event.date)),
           trailing: ReorderableDragStartListener(
             index: widget.index,
             child: const Icon(Icons.drag_handle),

@@ -49,16 +49,18 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
 
   void onCreateDate(bool isEvent, {required BuildContext context1}) {
-    for (DateTileModel date
-        in Provider.of<DateListProvider>(context, listen: false).dateList) {
-      if (getDate(date.date) == getDate(selectedDate)) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("This date already exists!"),
-        ));
-        return;
-      }
-    }
     if (isEvent) {
+      for (DateTileModel date
+          in Provider.of<DateListProvider>(context, listen: false).dateList) {
+        if (getDate(date.date) == getDate(selectedDate)) {
+          date.events.add(ToDoTileModel(
+              date: date.date,
+              text: _newEventController.text,
+              isChecked: ValueNotifier(false),
+              isEditing: ValueNotifier(false)));
+          setState(() {});
+        }
+      }
       final newEvent = _newEventController.text;
       setState(() {
         context.read<DateListProvider>().addDate(
@@ -77,6 +79,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("New event has been created!")));
     } else {
+      for (DateTileModel date
+          in Provider.of<DateListProvider>(context, listen: false).dateList) {
+        if (getDate(date.date) == getDate(selectedDate)) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("This date already exists!"),
+          ));
+          return;
+        }
+      }
       setState(() {
         context
             .read<DateListProvider>()
@@ -147,13 +158,19 @@ class _HomeScreenState extends State<HomeScreen> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: context.watch<DateListProvider>().dateList.length,
               itemBuilder: (context, index) {
-                return DateTile(
-                  dateTile: context.watch<DateListProvider>().dateList[index],
-                  onAccept: onAccept,
-                  getDate: getDate,
-                  onDragComplete: onDragComplete,
-                  isDateToday: isDateToday,
-                  removeDate: removeDate,
+                return Column(
+                  children: [
+                    DateTile(
+                      dateTile:
+                          context.watch<DateListProvider>().dateList[index],
+                      onAccept: onAccept,
+                      getDate: getDate,
+                      onDragComplete: onDragComplete,
+                      isDateToday: isDateToday,
+                      removeDate: removeDate,
+                    ),
+                    const Divider(),
+                  ],
                 );
               },
             ),
