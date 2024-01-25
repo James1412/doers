@@ -19,8 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onAccept(
       DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
-    print(getDate(receivedData.data.date));
-    print(getDate(dateTile.date));
     if (getDate(receivedData.data.date) == getDate(dateTile.date)) {
       isDraggedToSameDate = true;
       setState(() {});
@@ -50,31 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onCreateDate(bool isEvent, {required BuildContext context1}) {
     if (isEvent) {
-      for (DateTileModel date
-          in Provider.of<DateListProvider>(context, listen: false).dateList) {
-        if (getDate(date.date) == getDate(selectedDate)) {
-          date.events.add(ToDoTileModel(
-              date: date.date,
-              text: _newEventController.text,
-              isChecked: ValueNotifier(false),
-              isEditing: ValueNotifier(false)));
-          setState(() {});
-        }
-      }
-      final newEvent = _newEventController.text;
-      setState(() {
-        context.read<DateListProvider>().addDate(
-              DateTileModel(date: selectedDate, events: [
-                ToDoTileModel(
-                    date: selectedDate,
-                    text: newEvent,
-                    isChecked: ValueNotifier(false),
-                    isEditing: ValueNotifier(false))
-              ]),
-            );
-        selectedDate = DateTime.now();
-        _newEventController.clear();
-      });
+      // If date matches with existing date
+      context.read<DateListProvider>().addEvent(ToDoTileModel(
+          date: selectedDate,
+          text: _newEventController.text,
+          isChecked: ValueNotifier(false),
+          isEditing: ValueNotifier(false)));
+      selectedDate = DateTime.now();
+      _newEventController.clear();
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("New event has been created!")));

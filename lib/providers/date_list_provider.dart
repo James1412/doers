@@ -65,4 +65,25 @@ class DateListProvider extends ChangeNotifier {
     dateList.remove(date);
     notifyListeners();
   }
+
+  void addEvent(ToDoTileModel event) {
+    for (DateTileModel date in dateList) {
+      if (getDate(date.date) == getDate(event.date)) {
+        date.events.add(event);
+        notifyListeners();
+        return;
+      }
+    }
+    dateList.add(DateTileModel(date: event.date, events: [event]));
+    notifyListeners();
+  }
+
+  void removeEvent(ToDoTileModel event) {
+    for (DateTileModel date in dateList) {
+      if (getDate(date.date) == getDate(event.date)) {
+        date.events.remove(event);
+        notifyListeners();
+      }
+    }
+  }
 }
