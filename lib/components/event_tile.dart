@@ -76,6 +76,7 @@ class _EventTileState extends State<EventTile> {
           ),
           title: widget.isEditing.value
               ? TextField(
+                  autocorrect: false,
                   controller: widget.controller,
                   cursorColor: Theme.of(context).primaryColor,
                   decoration: const InputDecoration(

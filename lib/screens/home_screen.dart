@@ -2,6 +2,7 @@ import 'package:doers/components/date_tile.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   ];
 
-  bool isSameDate = false;
+  bool isDraggedToSameDate = false;
 
   void onAccept(
       DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
@@ -74,19 +75,19 @@ class _HomeScreenState extends State<HomeScreen> {
     final dateTileDate =
         DateTime(dateTile.date.year, dateTile.date.month, dateTile.date.day);
     if (receivedDate == dateTileDate) {
-      isSameDate = true;
+      isDraggedToSameDate = true;
       setState(() {});
       return;
     }
     setState(() {
-      isSameDate = false;
+      isDraggedToSameDate = false;
       receivedData.data.date = dateTileDate;
       dateTile.events.add(receivedData.data);
     });
   }
 
   void onDragComplete(dateTile, event) {
-    if (isSameDate) return;
+    if (isDraggedToSameDate) return;
     setState(() {
       dateTile.events.remove(event);
     });
@@ -98,7 +99,183 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void onNewEventTap() {}
+  List tabList = ["New Date", "New Event"];
+  late DateTime selectedDate;
+
+  void onNewEventTap() {
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => GestureDetector(
+        onTap: () {
+          if (FocusManager.instance.primaryFocus != null) {
+            FocusManager.instance.primaryFocus!.unfocus();
+          }
+        },
+        child: Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Container(
+            height: 450,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: DefaultTabController(
+              length: tabList.length,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 80,
+                    child: TabBar(
+                      labelColor: Theme.of(context).primaryColor,
+                      indicatorColor: Theme.of(context).primaryColor,
+                      tabs: [
+                        for (var tab in tabList)
+                          Text(
+                            tab,
+                            style: const TextStyle(fontSize: 17),
+                          )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 180,
+                              child: CupertinoDatePicker(
+                                minimumDate: DateTime.now(),
+                                onDateTimeChanged: (value) {
+                                  selectedDate = value;
+                                },
+                                mode: CupertinoDatePickerMode.date,
+                                showDayOfWeek: true,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      dateList.add(DateTileModel(
+                                          date: selectedDate, events: []));
+                                    });
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                "New date has been created!")));
+                                  },
+                                  child: Text(
+                                    "Create",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 180,
+                              child: CupertinoDatePicker(
+                                minimumDate: DateTime.now(),
+                                onDateTimeChanged: (value) {
+                                  selectedDate = value;
+                                },
+                                mode: CupertinoDatePickerMode.date,
+                                showDayOfWeek: true,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: TextField(
+                                cursorColor: Theme.of(context).primaryColor,
+                                decoration: InputDecoration(
+                                    hintText: "Your event goes here",
+                                    focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColor)),
+                                    border: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Theme.of(context)
+                                                .primaryColor))),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text(
+                                    "Cancel",
+                                    style: TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      dateList.add(DateTileModel(
+                                          date: selectedDate, events: []));
+                                    });
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                "New date has been created!")));
+                                  },
+                                  child: Text(
+                                    "Create",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   int currentYear = DateTime.now().year;
   @override
