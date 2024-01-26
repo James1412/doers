@@ -1,5 +1,4 @@
 import 'package:doers/providers/color_provider.dart';
-import 'package:doers/services/notification_service.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

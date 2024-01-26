@@ -3,6 +3,7 @@ import 'package:doers/components/proxy_decoration.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -254,7 +255,7 @@ class _DateTileState extends State<DateTile> {
                   onTap: () {
                     context.read<DateListProvider>().addEvent(ToDoTileModel(
                         isEditing: ValueNotifier(true),
-                        date: widget.dateTile.date.add(Duration(
+                        date: getNoTimeDate(widget.dateTile.date).add(Duration(
                             hours: DateTime.now().hour,
                             minutes: DateTime.now().minute)),
                         text: '',

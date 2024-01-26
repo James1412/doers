@@ -1,5 +1,6 @@
 import 'package:doers/box_name.dart';
 import 'package:doers/models/date_tile_model.dart';
+import 'package:doers/utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 final tileBox = Hive.box(dateListBox);
@@ -13,11 +14,11 @@ class DateListRepository {
     return tileBox.get(dateListBox) ??
         [
           DateTileModel(
-            date: DateTime.now(),
+            date: currentDay,
             events: [],
           ).toJson(),
           DateTileModel(
-            date: DateTime.now().add(const Duration(days: 1)),
+            date: currentDay.add(const Duration(days: 1)),
             events: [],
           ).toJson(),
         ];

@@ -168,4 +168,10 @@ class DateListProvider extends ChangeNotifier {
     dateListRepo.updateTiles(dateJson);
     return event.isChecked.value;
   }
+
+  bool isDeclinedDate = true;
+  void setDeclinedDate(bool value) {
+    isDeclinedDate = value;
+    notifyListeners();
+  }
 }

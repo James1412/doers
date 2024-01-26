@@ -32,67 +32,61 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
 
   void onCreateDate(bool isEvent, {required BuildContext context1}) {
+    // If creation is including the event
     if (isEvent) {
-      // If date matches with existing date
       context.read<DateListProvider>().addEvent(ToDoTileModel(
           date: selectedDate,
           text: _newEventController.text,
           isChecked: ValueNotifier(false),
           isEditing: ValueNotifier(false)));
-      selectedDate = DateTime.now();
+      resetSelectedDate();
+      context.read<DateListProvider>().setDeclinedDate(false);
       _newEventController.clear();
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("New event has been created!")));
     } else {
       for (DateTileModel date
           in Provider.of<DateListProvider>(context, listen: false).dateList) {
         if (getDate(date.date) == getDate(selectedDate)) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("This date already exists!"),
-          ));
+          context.read<DateListProvider>().setDeclinedDate(true);
           return;
         }
       }
       context
           .read<DateListProvider>()
           .addDate(DateTileModel(date: selectedDate, events: []));
-      selectedDate = DateTime.now();
+      resetSelectedDate();
       Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("New date has been created!")));
     }
   }
 
   final TextEditingController _newEventController = TextEditingController();
   void onNewEventTap() {
     showModalBottomSheet(
+      isDismissible: false,
       backgroundColor: Colors.white,
       isScrollControlled: true,
       context: context,
-      builder: (context) => Container(
-        height: 450,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        clipBehavior: Clip.hardEdge,
-        child: Scaffold(
-          body: NewBottomSheet(
-            controller: _newEventController,
-            onDateTimeChanged: onDateTimeChanged,
-            selectedDate: selectedDate,
-            tabList: tabList,
-            onCreateDate: onCreateDate,
-          ),
-        ),
+      builder: (context) => NewBottomSheet(
+        resetSelectedDate: resetSelectedDate,
+        controller: _newEventController,
+        onDateTimeChanged: onDateTimeChanged,
+        selectedDate: selectedDate,
+        tabList: tabList,
+        onCreateDate: onCreateDate,
       ),
     );
   }
 
   void onDateTimeChanged(value) {
+    context.read<DateListProvider>().setDeclinedDate(false);
     selectedDate = value;
     setState(() {});
+  }
+
+  void resetSelectedDate() {
+    setState(() {
+      selectedDate = DateTime.now();
+    });
   }
 
   @override
