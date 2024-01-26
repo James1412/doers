@@ -67,7 +67,7 @@ class _DateTileState extends State<DateTile> {
           },
           child: Dialog(
             insetPadding:
-                const EdgeInsets.symmetric(vertical: 250, horizontal: 30),
+                const EdgeInsets.symmetric(vertical: 220, horizontal: 30),
             backgroundColor: Colors.white,
             surfaceTintColor: Colors.white,
             shadowColor: Colors.white,
