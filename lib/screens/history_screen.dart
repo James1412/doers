@@ -1,6 +1,7 @@
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/screens/settings_screen.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -46,6 +47,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
           style: TextStyle(fontSize: 25),
         ),
         centerTitle: false,
+        actions: [
+          IconButton(
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SettingsScreen(),
+                  )),
+              icon: const Icon(Icons.settings))
+        ],
       ),
       body: SafeArea(
         child: Column(

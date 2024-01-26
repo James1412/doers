@@ -1,17 +1,12 @@
 // ignore_for_file: must_be_immutable
-
-import 'dart:io';
-
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:provider/provider.dart';
-import 'package:vibration/vibration.dart';
 
 class EventTile extends StatefulWidget {
   final ValueNotifier<bool> isSelected;
@@ -61,7 +56,7 @@ class _EventTileState extends State<EventTile> {
               likeBuilder: (isLiked) {
                 return Icon(
                   isLiked ? Icons.check_box : Icons.check_box_outline_blank,
-                  color: isLiked ? Colors.blue : null,
+                  color: isLiked ? Theme.of(context).primaryColor : null,
                   size: 25,
                 );
               },

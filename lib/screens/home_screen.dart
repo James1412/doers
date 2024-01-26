@@ -158,9 +158,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       )),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Theme.of(context).primaryColor,
         splashColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.black,
+        foregroundColor: Colors.white,
         shape: const CircleBorder(),
         onPressed: onNewEventTap,
         child: const Icon(Icons.add),
