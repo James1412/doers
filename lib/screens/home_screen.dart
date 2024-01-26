@@ -15,19 +15,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isDraggedToSameDate = false;
-
   void onAccept(
       DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
-    context
-        .read<DateListProvider>()
-        .onAccept(receivedData, dateTile, isDraggedToSameDate);
+    context.read<DateListProvider>().onAccept(receivedData, dateTile);
   }
 
   void onDragComplete(dateTile, event) {
-    context
-        .read<DateListProvider>()
-        .onDragComplete(dateTile, isDraggedToSameDate, event);
+    context.read<DateListProvider>().onDragComplete(dateTile, event);
   }
 
   void removeDate(DateTileModel dateTile) {
@@ -107,59 +101,61 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  int currentYear = DateTime.now().year;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            backgroundColor: Colors.white,
-            shadowColor: Colors.white,
-            elevation: 0,
-            surfaceTintColor: Colors.white,
-            pinned: true,
-            title: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                currentYear.toString(),
-                style: const TextStyle(
-                  fontSize: 25,
+          child: RefreshIndicator.adaptive(
+        color: Theme.of(context).primaryColor,
+        onRefresh: context.read<DateListProvider>().refreshHomeScreen,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              shadowColor: Colors.white,
+              elevation: 0,
+              surfaceTintColor: Colors.white,
+              pinned: true,
+              title: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  currentYear.toString(),
+                  style: const TextStyle(
+                    fontSize: 25,
+                  ),
                 ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: ListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: context.watch<DateListProvider>().dateList.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        DateTile(
-                          dateTile:
-                              context.watch<DateListProvider>().dateList[index],
-                          onAccept: onAccept,
-                          getDate: getDate,
-                          onDragComplete: onDragComplete,
-                          isDateToday: isDateToday,
-                          removeDate: removeDate,
-                        ),
-                        const Divider(),
-                      ],
-                    );
-                  },
-                ),
-              ],
+            SliverToBoxAdapter(
+              child: ListView(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount:
+                        context.watch<DateListProvider>().dateList.length,
+                    itemBuilder: (context, index) {
+                      return DateTile(
+                        dateTile:
+                            context.watch<DateListProvider>().dateList[index],
+                        onAccept: onAccept,
+                        getDate: getDate,
+                        onDragComplete: onDragComplete,
+                        isDateToday: isDateToday,
+                        removeDate: removeDate,
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColorLight,
@@ -168,15 +164,6 @@ class _HomeScreenState extends State<HomeScreen> {
         shape: const CircleBorder(),
         onPressed: onNewEventTap,
         child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Theme.of(context).primaryColor,
-        elevation: 0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: ''),
-        ],
       ),
     );
   }

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
-import 'package:doers/repos/date_list_repo.dart';
+import 'package:doers/repos/all_date_list_repo.dart';
+import 'package:doers/repos/current_date_list_repo.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
 
 class DateListProvider extends ChangeNotifier {
   // Get from database
@@ -12,8 +17,24 @@ class DateListProvider extends ChangeNotifier {
     for (Map<dynamic, dynamic> tile in dbDateList)
       DateTileModel.fromJson(json: tile),
   ];
+  late List<DateTileModel> allDateList = [
+    for (Map<dynamic, dynamic> tile in dbDateList)
+      DateTileModel.fromJson(json: tile),
+  ];
 
   final dateListRepo = DateListRepository();
+  final allDateListRepo = AllDateListRepository();
+
+  Future<void> refreshHomeScreen() async {
+    dateList.removeWhere((element) => element.date.isBefore(currentDay));
+    dateList.removeWhere((element) => element.events.isEmpty);
+    notifyListeners();
+    List<Map<String, dynamic>> dateJson = [];
+    for (DateTileModel date in dateList) {
+      dateJson.add(date.toJson());
+    }
+    await dateListRepo.updateTiles(dateJson);
+  }
 
   void addDate(DateTileModel date) {
     dateList.add(date);
@@ -105,8 +126,8 @@ class DateListProvider extends ChangeNotifier {
     dateListRepo.updateTiles(dateJson);
   }
 
-  void onAccept(DragTargetDetails<ToDoTileModel> receivedData,
-      DateTileModel dateTile, bool isDraggedToSameDate) {
+  void onAccept(
+      DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
     if (getDate(receivedData.data.date) == getDate(dateTile.date)) {
       isDraggedToSameDate = true;
       return;
@@ -123,8 +144,8 @@ class DateListProvider extends ChangeNotifier {
     dateListRepo.updateTiles(dateJson);
   }
 
-  void onDragComplete(
-      DateTileModel dateTile, bool isDraggedToSameDate, ToDoTileModel event) {
+  bool isDraggedToSameDate = false;
+  void onDragComplete(DateTileModel dateTile, ToDoTileModel event) {
     if (isDraggedToSameDate) return;
     dateList[dateList.indexOf(dateTile)].events.remove(event);
     notifyListeners();
@@ -133,5 +154,24 @@ class DateListProvider extends ChangeNotifier {
       dateJson.add(date.toJson());
     }
     dateListRepo.updateTiles(dateJson);
+  }
+
+  Future<bool> onCheckTap(ToDoTileModel event) async {
+    //Vibration
+    if (Platform.isAndroid) {
+      if (await Vibration.hasVibrator() != null &&
+          await Vibration.hasVibrator() == true) {
+        Vibration.vibrate(duration: 100);
+      }
+    } else if (Platform.isIOS) {
+      HapticFeedback.mediumImpact();
+    }
+    event.isChecked.value = !event.isChecked.value;
+    List<Map<String, dynamic>> dateJson = [];
+    for (DateTileModel date in dateList) {
+      dateJson.add(date.toJson());
+    }
+    dateListRepo.updateTiles(dateJson);
+    return event.isChecked.value;
   }
 }

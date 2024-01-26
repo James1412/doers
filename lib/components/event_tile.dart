@@ -5,10 +5,12 @@ import 'dart:io';
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
+import 'package:doers/providers/date_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 class EventTile extends StatefulWidget {
@@ -34,18 +36,8 @@ class EventTile extends StatefulWidget {
 }
 
 class _EventTileState extends State<EventTile> {
-  Future<bool> onCheckTap(value, isSelected) async {
-    //Vibration
-    if (Platform.isAndroid) {
-      if (await Vibration.hasVibrator() != null &&
-          await Vibration.hasVibrator() == true) {
-        Vibration.vibrate(duration: 100);
-      }
-    } else if (Platform.isIOS) {
-      HapticFeedback.mediumImpact();
-    }
-    isSelected.value = !isSelected.value;
-    return isSelected.value;
+  Future<bool> onCheckTap(value, dateTileModel, event) async {
+    return await context.read<DateListProvider>().onCheckTap(event);
   }
 
   @override
@@ -63,7 +55,8 @@ class _EventTileState extends State<EventTile> {
             height: 40,
             child: LikeButton(
               isLiked: widget.isSelected.value,
-              onTap: (value) => onCheckTap(value, widget.isSelected),
+              onTap: (value) =>
+                  onCheckTap(value, widget.dateTile, widget.event),
               animationDuration: const Duration(milliseconds: 700),
               likeBuilder: (isLiked) {
                 return Icon(

@@ -254,7 +254,9 @@ class _DateTileState extends State<DateTile> {
                   onTap: () {
                     context.read<DateListProvider>().addEvent(ToDoTileModel(
                         isEditing: ValueNotifier(true),
-                        date: widget.dateTile.date,
+                        date: widget.dateTile.date.add(Duration(
+                            hours: DateTime.now().hour,
+                            minutes: DateTime.now().minute)),
                         text: '',
                         isChecked: ValueNotifier(false)));
                   },

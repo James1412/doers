@@ -5,8 +5,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 final tileBox = Hive.box(dateListBox);
 
 class DateListRepository {
-  void updateTiles(List<Map<String, dynamic>> tiles) {
-    tileBox.put(dateListBox, tiles);
+  Future<void> updateTiles(List<Map<String, dynamic>> tiles) async {
+    await tileBox.put(dateListBox, tiles);
   }
 
   List getTiles() {

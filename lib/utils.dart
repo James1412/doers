@@ -21,7 +21,7 @@ Map<int, String> months = {
   11: "Nov",
   12: "Dec",
 };
-
+int currentYear = DateTime.now().year;
 String getDate(DateTime dateTime) {
   if (isDateToday(dateTime)) {
     return "${months[dateTime.month]} ${dateTime.day} (${weekdays[dateTime.weekday]}) • Today";
