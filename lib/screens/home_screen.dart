@@ -19,24 +19,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onAccept(
       DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
-    if (getDate(receivedData.data.date) == getDate(dateTile.date)) {
-      isDraggedToSameDate = true;
-      setState(() {});
-      return;
-    } else {
-      setState(() {
-        isDraggedToSameDate = false;
-        receivedData.data.date = dateTile.date;
-        dateTile.events.add(receivedData.data);
-      });
-    }
+    context
+        .read<DateListProvider>()
+        .onAccept(receivedData, dateTile, isDraggedToSameDate);
   }
 
   void onDragComplete(dateTile, event) {
-    if (isDraggedToSameDate) return;
-    setState(() {
-      dateTile.events.remove(event);
-    });
+    context
+        .read<DateListProvider>()
+        .onDragComplete(dateTile, isDraggedToSameDate, event);
   }
 
   void removeDate(DateTileModel dateTile) {
@@ -69,12 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
           return;
         }
       }
-      setState(() {
-        context
-            .read<DateListProvider>()
-            .addDate(DateTileModel(date: selectedDate, events: []));
-        selectedDate = DateTime.now();
-      });
+      context
+          .read<DateListProvider>()
+          .addDate(DateTileModel(date: selectedDate, events: []));
+      selectedDate = DateTime.now();
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("New date has been created!")));
@@ -123,41 +112,55 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
-          children: [
-            ListTile(
-              dense: true,
-              title: Text(
+          child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.white,
+            shadowColor: Colors.white,
+            elevation: 0,
+            surfaceTintColor: Colors.white,
+            pinned: true,
+            title: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
                 currentYear.toString(),
                 style: const TextStyle(
                   fontSize: 25,
                 ),
               ),
             ),
-            ListView.builder(
+          ),
+          SliverToBoxAdapter(
+            child: ListView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: context.watch<DateListProvider>().dateList.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    DateTile(
-                      dateTile:
-                          context.watch<DateListProvider>().dateList[index],
-                      onAccept: onAccept,
-                      getDate: getDate,
-                      onDragComplete: onDragComplete,
-                      isDateToday: isDateToday,
-                      removeDate: removeDate,
-                    ),
-                    const Divider(),
-                  ],
-                );
-              },
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: context.watch<DateListProvider>().dateList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        DateTile(
+                          dateTile:
+                              context.watch<DateListProvider>().dateList[index],
+                          onAccept: onAccept,
+                          getDate: getDate,
+                          onDragComplete: onDragComplete,
+                          isDateToday: isDateToday,
+                          removeDate: removeDate,
+                        ),
+                        const Divider(),
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColorLight,
         splashColor: Theme.of(context).primaryColor,

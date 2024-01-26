@@ -16,7 +16,6 @@ class EventTile extends StatefulWidget {
   ToDoTileModel event;
   final Color tileColor;
   final int index;
-  final ValueNotifier<bool> isEditing;
   final DateTileModel dateTile;
   final TextEditingController controller;
   final Function onSubmitted;
@@ -26,7 +25,6 @@ class EventTile extends StatefulWidget {
       required this.event,
       required this.tileColor,
       required this.index,
-      required this.isEditing,
       required this.dateTile,
       required this.controller,
       required this.onSubmitted});
@@ -53,7 +51,7 @@ class _EventTileState extends State<EventTile> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: widget.isEditing,
+      valueListenable: widget.event.isEditing,
       builder: (context, value, child) => ValueListenableBuilder(
         valueListenable: widget.isSelected,
         builder: (context, value, child) => ListTile(
@@ -76,7 +74,7 @@ class _EventTileState extends State<EventTile> {
               },
             ),
           ),
-          title: widget.isEditing.value
+          title: widget.event.isEditing.value
               ? TextField(
                   autocorrect: false,
                   controller: widget.controller,
@@ -86,11 +84,11 @@ class _EventTileState extends State<EventTile> {
                   ),
                   autofocus: true,
                   onTapOutside: (event) {
-                    widget.isEditing.value = false;
+                    widget.event.isEditing.value = false;
                     widget.controller.clear();
                   },
                   onSubmitted: (value) =>
-                      widget.onSubmitted(value, widget.isEditing, widget.index),
+                      widget.onSubmitted(value, widget.event, widget.index),
                 )
               : AnimatedLineThrough(
                   strokeWidth: 1.0,

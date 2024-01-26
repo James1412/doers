@@ -31,14 +31,9 @@ class DateTile extends StatefulWidget {
 
 class _DateTileState extends State<DateTile> {
   final TextEditingController _controller = TextEditingController();
-  void onReorder(int oldIndex, int newIndex) {
-    setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      final item = widget.dateTile.events.removeAt(oldIndex);
-      widget.dateTile.events.insert(newIndex, item);
-    });
+
+  void onReorder(int oldIndex, int newIndex, DateTileModel dateTile) {
+    context.read<DateListProvider>().onReorder(oldIndex, newIndex, dateTile);
   }
 
   @override
@@ -48,11 +43,10 @@ class _DateTileState extends State<DateTile> {
     super.dispose();
   }
 
-  void onSubmitted(String value, ValueNotifier<bool> isEditing, int index) {
-    isEditing.value = false;
-    setState(() {
-      widget.dateTile.events[index].text = value;
-    });
+  void onSubmitted(String value, ToDoTileModel event, int index) {
+    context
+        .read<DateListProvider>()
+        .onSubmittedTap(event, value, widget.dateTile, index);
     _controller.clear();
   }
 
@@ -186,7 +180,8 @@ class _DateTileState extends State<DateTile> {
                   proxyDecorator: proxyDecorator,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  onReorder: onReorder,
+                  onReorder: (oldIndex, newIndex) =>
+                      onReorder(oldIndex, newIndex, widget.dateTile),
                   children: [
                     for (ToDoTileModel event in widget.dateTile.events)
                       InkWell(
@@ -207,14 +202,14 @@ class _DateTileState extends State<DateTile> {
                             child: Material(
                               shadowColor: Colors.black,
                               child: EventTile(
-                                  onSubmitted: onSubmitted,
-                                  controller: _controller,
-                                  dateTile: widget.dateTile,
-                                  isSelected: event.isChecked,
-                                  event: event,
-                                  tileColor: Colors.grey.withOpacity(0.5),
-                                  index: widget.dateTile.events.indexOf(event),
-                                  isEditing: event.isEditing),
+                                onSubmitted: onSubmitted,
+                                controller: _controller,
+                                dateTile: widget.dateTile,
+                                isSelected: event.isChecked,
+                                event: event,
+                                tileColor: Colors.grey.withOpacity(0.5),
+                                index: widget.dateTile.events.indexOf(event),
+                              ),
                             ),
                           ),
                           // regular child when not dragged
@@ -240,14 +235,14 @@ class _DateTileState extends State<DateTile> {
                               ],
                             ),
                             child: EventTile(
-                                onSubmitted: onSubmitted,
-                                controller: _controller,
-                                dateTile: widget.dateTile,
-                                isSelected: event.isChecked,
-                                event: event,
-                                tileColor: Colors.white,
-                                index: widget.dateTile.events.indexOf(event),
-                                isEditing: event.isEditing),
+                              onSubmitted: onSubmitted,
+                              controller: _controller,
+                              dateTile: widget.dateTile,
+                              isSelected: event.isChecked,
+                              event: event,
+                              tileColor: Colors.white,
+                              index: widget.dateTile.events.indexOf(event),
+                            ),
                           ),
                         ),
                       ),
@@ -257,13 +252,11 @@ class _DateTileState extends State<DateTile> {
                 InkWell(
                   key: UniqueKey(),
                   onTap: () {
-                    setState(() {
-                      widget.dateTile.events.add(ToDoTileModel(
-                          isEditing: ValueNotifier(true),
-                          date: widget.dateTile.date,
-                          text: '',
-                          isChecked: ValueNotifier(false)));
-                    });
+                    context.read<DateListProvider>().addEvent(ToDoTileModel(
+                        isEditing: ValueNotifier(true),
+                        date: widget.dateTile.date,
+                        text: '',
+                        isChecked: ValueNotifier(false)));
                   },
                   child: const ListTile(
                     dense: true,
