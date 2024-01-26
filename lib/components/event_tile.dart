@@ -64,6 +64,9 @@ class _EventTileState extends State<EventTile> {
           ),
           title: widget.event.isEditing.value
               ? TextField(
+                  enableIMEPersonalizedLearning: true,
+                  enableInteractiveSelection: true,
+                  enableSuggestions: true,
                   autocorrect: false,
                   controller: widget.controller,
                   cursorColor: Theme.of(context).primaryColor,

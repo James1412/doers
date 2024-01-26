@@ -2,8 +2,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
-//TODO: Add notification permission for ios and android
-
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -69,6 +67,11 @@ class NotificationService {
             UILocalNotificationDateInterpretation.absoluteTime,
         // IF this is time, it repeats daily on TZDateTime at that time
         matchDateTimeComponents: DateTimeComponents.time);
+  }
+
+  Future<int> numActiveNotification() async {
+    List notifications = await notificationsPlugin.getActiveNotifications();
+    return notifications.length;
   }
 
   Future<void> cancelScheduledNotification(int id) async {

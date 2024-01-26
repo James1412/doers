@@ -1,4 +1,5 @@
 import 'package:doers/providers/color_provider.dart';
+import 'package:doers/providers/notification_provider.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isNotificationOn =
+        context.watch<NotificationProvider>().isNotificationOn;
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.white,
@@ -37,6 +40,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: Column(
         children: [
+          InkWell(
+            child: ListTile(
+              dense: true,
+              trailing: Transform.translate(
+                offset: const Offset(13, 0),
+                child: Switch(
+                  splashRadius: 0,
+                  inactiveThumbColor: Colors.grey,
+                  inactiveTrackColor: Colors.grey.shade100,
+                  activeColor: Theme.of(context).primaryColor,
+                  value: !isNotificationOn,
+                  onChanged: (val) => isNotificationOn
+                      ? context
+                          .read<NotificationProvider>()
+                          .cancelNotifications()
+                      : context.read<NotificationProvider>().setNotifications(),
+                ),
+              ),
+              title: const Text(
+                "Turn off notifications",
+                style: TextStyle(fontSize: 17),
+              ),
+            ),
+          ),
           InkWell(
             onTap: onColorChangeTap,
             child: ListTile(

@@ -1,9 +1,9 @@
 import 'package:doers/box_name.dart';
 import 'package:doers/providers/color_provider.dart';
 import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/providers/notification_provider.dart';
 import 'package:doers/screens/navigation_screen.dart';
 import 'package:doers/services/notification_service.dart';
-import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -14,16 +14,6 @@ void main() async {
   await Hive.openBox(dateListBox);
   await Hive.openBox(colorBoxName);
   await NotificationService().initNotification();
-  await NotificationService().scheduleNotification(
-      scheduledNotificationDateTime: currentDay.add(const Duration(hours: 10)),
-      title: "Check your to do list!",
-      body: "or create one!",
-      id: 1);
-  await NotificationService().scheduleNotification(
-      scheduledNotificationDateTime: currentDay.add(const Duration(hours: 21)),
-      title: "Check your to do list!",
-      body: "or create one!",
-      id: 2);
   runApp(
     MultiProvider(
       providers: [
@@ -32,7 +22,10 @@ void main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => ColorProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NotificationProvider(),
+        ),
       ],
       child: const DoersApp(),
     ),
@@ -47,6 +40,12 @@ class DoersApp extends StatefulWidget {
 }
 
 class _DoersAppState extends State<DoersApp> {
+  @override
+  void initState() {
+    context.read<NotificationProvider>().setNotifications();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
