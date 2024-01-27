@@ -1,3 +1,4 @@
+import 'package:doers/features/admob/ad_helper.dart';
 import 'package:doers/features/upcoming/components/date_tile.dart';
 import 'package:doers/features/upcoming/components/new_bottom_sheet.dart';
 import 'package:doers/models/date_tile_model.dart';
@@ -5,6 +6,7 @@ import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -92,7 +94,36 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     _newEventController.dispose();
+    _ad?.dispose();
     super.dispose();
+  }
+
+  BannerAd? _ad;
+  @override
+  void initState() {
+    super.initState();
+    _initGoogleMobileAds();
+    BannerAd(
+      adUnitId: HomeScreenAdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _ad = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          // Releases an ad resource when it fails to load
+          ad.dispose();
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+      ),
+    ).load();
+  }
+
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    return MobileAds.instance.initialize();
   }
 
   @override
@@ -130,6 +161,15 @@ class _HomeScreenState extends State<HomeScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
+                if (_ad != null)
+                  Container(
+                    height: _ad!.size.height.toDouble(),
+                    width: _ad!.size.width.toDouble(),
+                    alignment: Alignment.center,
+                    child: AdWidget(
+                      ad: _ad!,
+                    ),
+                  ),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),

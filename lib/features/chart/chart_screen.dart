@@ -1,10 +1,12 @@
 import 'package:animated_line_through/animated_line_through.dart';
+import 'package:doers/features/admob/ad_helper.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
 import 'package:doers/features/settings/settings_screen.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -20,6 +22,36 @@ class ChartScreen extends StatefulWidget {
 class _ChartScreenState extends State<ChartScreen> {
   Future<bool> onCheckTap(value, ToDoTileModel event) async {
     return await context.read<DateListProvider>().onCheckTap(event);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    BannerAd(
+      adUnitId: ChartScreenAdHelper.bannerAdUnitId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _ad = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, error) {
+          // Releases an ad resource when it fails to load
+          ad.dispose();
+          print('Ad load failed (code=${error.code} message=${error.message})');
+        },
+      ),
+    ).load();
+  }
+
+  BannerAd? _ad;
+
+  @override
+  void dispose() {
+    _ad?.dispose();
+    super.dispose();
   }
 
   @override
@@ -162,6 +194,13 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                           ),
                         ),
+                  if (_ad != null)
+                    Container(
+                      width: _ad!.size.width.toDouble(),
+                      height: _ad!.size.height.toDouble(),
+                      alignment: Alignment.center,
+                      child: AdWidget(ad: _ad!),
+                    ),
                 ],
               ),
             ),
