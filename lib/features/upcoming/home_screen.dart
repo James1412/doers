@@ -1,5 +1,5 @@
-import 'package:doers/features/upcoming_todo/components/date_tile.dart';
-import 'package:doers/features/upcoming_todo/components/new_bottom_sheet.dart';
+import 'package:doers/features/upcoming/components/date_tile.dart';
+import 'package:doers/features/upcoming/components/new_bottom_sheet.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
@@ -133,14 +133,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount:
-                      // TODO: Change this
-                      dateList.length,
+                  itemCount: dateList.length,
                   itemBuilder: (context, index) {
                     return DateTile(
-                      dateTile:
-                          // TODO: Change this
-                          dateList[index],
+                      dateTile: dateList[index],
                       onAccept: onAccept,
                       getDate: getDate,
                       onDragComplete: onDragComplete,

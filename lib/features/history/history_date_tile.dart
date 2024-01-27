@@ -1,5 +1,5 @@
-import 'package:doers/features/upcoming_todo/components/event_tile.dart';
-import 'package:doers/features/upcoming_todo/components/proxy_decoration.dart';
+import 'package:doers/features/upcoming/components/event_tile.dart';
+import 'package:doers/features/upcoming/components/proxy_decoration.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
