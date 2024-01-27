@@ -1,5 +1,6 @@
-import 'package:doers/screens/home_screen.dart';
-import 'package:doers/screens/history_screen.dart';
+import 'package:doers/features/history/all_history_screen.dart';
+import 'package:doers/features/upcoming_todo/home_screen.dart';
+import 'package:doers/features/chart/chart_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -12,7 +13,8 @@ class NavigationScreen extends StatefulWidget {
 class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> screens = [
     const HomeScreen(),
-    const HistoryScreen(),
+    const AllHistoryScreen(),
+    const ChartScreen(),
   ];
   int currentIndex = 0;
   @override
@@ -32,6 +34,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
+          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: ''),
         ],
       ),
     );

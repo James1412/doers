@@ -1,7 +1,7 @@
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
-import 'package:doers/screens/settings_screen.dart';
+import 'package:doers/features/settings/settings_screen.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -10,14 +10,14 @@ import 'package:like_button/like_button.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 
-class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({super.key});
+class ChartScreen extends StatefulWidget {
+  const ChartScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  State<ChartScreen> createState() => _ChartScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class _ChartScreenState extends State<ChartScreen> {
   Future<bool> onCheckTap(value, ToDoTileModel event) async {
     return await context.read<DateListProvider>().onCheckTap(event);
   }
@@ -43,7 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         title: const Text(
-          "History",
+          "Chart",
           style: TextStyle(fontSize: 25),
         ),
         centerTitle: false,

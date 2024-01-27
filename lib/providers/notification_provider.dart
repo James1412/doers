@@ -1,4 +1,4 @@
-import 'package:doers/services/notification_service.dart';
+import 'package:doers/features/notification/notification_service.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 

@@ -1,5 +1,5 @@
-import 'package:doers/components/date_tile.dart';
-import 'package:doers/components/new_bottom_sheet.dart';
+import 'package:doers/features/upcoming_todo/components/date_tile.dart';
+import 'package:doers/features/upcoming_todo/components/new_bottom_sheet.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
@@ -97,59 +97,65 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<DateTileModel> dateList = context
+        .watch<DateListProvider>()
+        .dateList
+        .where((element) =>
+            element.date.isAfter(currentDay) ||
+            element.date.isAtSameMomentAs(currentDay))
+        .toList();
+
     return Scaffold(
       body: SafeArea(
-          child: RefreshIndicator.adaptive(
-        color: Theme.of(context).primaryColor,
-        onRefresh: context.read<DateListProvider>().refreshHomeScreen,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: Colors.white,
-              shadowColor: Colors.white,
-              elevation: 0,
-              surfaceTintColor: Colors.white,
-              pinned: true,
-              title: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  currentYear.toString(),
-                  style: const TextStyle(
-                    fontSize: 25,
-                  ),
+          child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: Colors.white,
+            shadowColor: Colors.white,
+            elevation: 0,
+            surfaceTintColor: Colors.white,
+            pinned: true,
+            title: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                currentYear.toString(),
+                style: const TextStyle(
+                  fontSize: 25,
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount:
-                        context.watch<DateListProvider>().dateList.length,
-                    itemBuilder: (context, index) {
-                      return DateTile(
-                        dateTile:
-                            context.watch<DateListProvider>().dateList[index],
-                        onAccept: onAccept,
-                        getDate: getDate,
-                        onDragComplete: onDragComplete,
-                        isDateToday: isDateToday,
-                        removeDate: removeDate,
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                ],
-              ),
+          ),
+          SliverToBoxAdapter(
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount:
+                      // TODO: Change this
+                      dateList.length,
+                  itemBuilder: (context, index) {
+                    return DateTile(
+                      dateTile:
+                          // TODO: Change this
+                          dateList[index],
+                      onAccept: onAccept,
+                      getDate: getDate,
+                      onDragComplete: onDragComplete,
+                      isDateToday: isDateToday,
+                      removeDate: removeDate,
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 50,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,

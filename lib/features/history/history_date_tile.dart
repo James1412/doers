@@ -1,22 +1,21 @@
-import 'package:doers/components/event_tile.dart';
-import 'package:doers/components/proxy_decoration.dart';
+import 'package:doers/features/upcoming_todo/components/event_tile.dart';
+import 'package:doers/features/upcoming_todo/components/proxy_decoration.dart';
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
 import 'package:doers/providers/date_list_provider.dart';
-import 'package:doers/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
-class DateTile extends StatefulWidget {
+class HistoryDateTile extends StatefulWidget {
   final DateTileModel dateTile;
   final Function onAccept;
   final Function getDate;
   final Function onDragComplete;
   final Function isDateToday;
   final Function removeDate;
-  const DateTile({
+  const HistoryDateTile({
     super.key,
     required this.dateTile,
     required this.onAccept,
@@ -27,10 +26,10 @@ class DateTile extends StatefulWidget {
   });
 
   @override
-  State<DateTile> createState() => _DateTileState();
+  State<HistoryDateTile> createState() => _HistoryDateTileState();
 }
 
-class _DateTileState extends State<DateTile> {
+class _HistoryDateTileState extends State<HistoryDateTile> {
   final TextEditingController _controller = TextEditingController();
 
   void onReorder(int oldIndex, int newIndex, DateTileModel dateTile) {
@@ -162,6 +161,7 @@ class _DateTileState extends State<DateTile> {
                 ),
               ],
             ),
+            // Every date
             child: ExpansionTile(
               dense: true,
               initiallyExpanded: true,
@@ -170,7 +170,7 @@ class _DateTileState extends State<DateTile> {
                   : null,
               shape: const BeveledRectangleBorder(),
               title: Text(
-                widget.getDate(widget.dateTile.date),
+                "${widget.dateTile.date.year} ${widget.getDate(widget.dateTile.date)}",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -248,23 +248,6 @@ class _DateTileState extends State<DateTile> {
                         ),
                       ),
                   ],
-                ),
-                // Add List Tile
-                InkWell(
-                  key: UniqueKey(),
-                  onTap: () {
-                    context.read<DateListProvider>().addEvent(ToDoTileModel(
-                        isEditing: ValueNotifier(true),
-                        date: getNoTimeDate(widget.dateTile.date).add(Duration(
-                            hours: DateTime.now().hour,
-                            minutes: DateTime.now().minute)),
-                        text: '',
-                        isChecked: ValueNotifier(false)));
-                  },
-                  child: const ListTile(
-                    dense: true,
-                    title: Icon(Icons.add),
-                  ),
                 ),
               ],
             ),

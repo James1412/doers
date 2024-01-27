@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:doers/models/date_tile_model.dart';
 import 'package:doers/models/todo_tile_model.dart';
-import 'package:doers/repos/current_date_list_repo.dart';
+import 'package:doers/repos/date_list_repo.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,17 +18,6 @@ class DateListProvider extends ChangeNotifier {
   ];
 
   final dateListRepo = DateListRepository();
-
-  Future<void> refreshHomeScreen() async {
-    dateList.removeWhere((element) => element.date.isBefore(currentDay));
-    dateList.removeWhere((element) => element.events.isEmpty);
-    notifyListeners();
-    List<Map<String, dynamic>> dateJson = [];
-    for (DateTileModel date in dateList) {
-      dateJson.add(date.toJson());
-    }
-    await dateListRepo.updateTiles(dateJson);
-  }
 
   void addDate(DateTileModel date) {
     dateList.add(date);
