@@ -158,7 +158,7 @@ class DateListProvider extends ChangeNotifier {
     return event.isChecked.value;
   }
 
-  bool isDeclinedDate = true;
+  bool isDeclinedDate = false;
   void setDeclinedDate(bool value) {
     isDeclinedDate = value;
     notifyListeners();
