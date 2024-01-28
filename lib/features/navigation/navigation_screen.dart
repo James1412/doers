@@ -25,7 +25,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Scaffold(
       body: screens[currentIndex],
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
         child: GNav(
           backgroundColor: Colors.white,
           color: Colors.grey,
@@ -37,6 +37,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
             });
           },
           padding: const EdgeInsets.all(16),
+          gap: 5,
           tabs: const [
             GButton(icon: Icons.home, text: "Home"),
             GButton(icon: Icons.history, text: "History"),

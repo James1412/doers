@@ -1,3 +1,4 @@
+import 'package:doers/features/settings/instruction_screen.dart';
 import 'package:doers/providers/color_provider.dart';
 import 'package:doers/providers/notification_provider.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
@@ -42,6 +43,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: Column(
         children: [
+          InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const InstructionsScreen(),
+                ),
+              );
+            },
+            child: const ListTile(
+              dense: true,
+              title: Text(
+                "How to use?",
+                style: TextStyle(fontSize: 17),
+              ),
+            ),
+          ),
           InkWell(
             child: ListTile(
               dense: true,
