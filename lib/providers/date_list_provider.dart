@@ -21,6 +21,7 @@ class DateListProvider extends ChangeNotifier {
 
   void addDate(DateTileModel date) {
     dateList.add(date);
+    dateList.sort((a, b) => a.date.compareTo(b.date));
     List<Map<String, dynamic>> dateJson = [];
     for (DateTileModel date in dateList) {
       dateJson.add(date.toJson());
