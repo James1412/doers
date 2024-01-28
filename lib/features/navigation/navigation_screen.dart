@@ -1,7 +1,9 @@
 import 'package:doers/features/history/all_history_screen.dart';
+import 'package:doers/features/settings/settings_screen.dart';
 import 'package:doers/features/upcoming/screens/home_screen.dart';
 import 'package:doers/features/chart/chart_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -15,27 +17,33 @@ class _NavigationScreenState extends State<NavigationScreen> {
     const HomeScreen(),
     const AllHistoryScreen(),
     const ChartScreen(),
+    const SettingsScreen(),
   ];
   int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        currentIndex: currentIndex,
-        backgroundColor: Colors.white,
-        selectedItemColor: Theme.of(context).primaryColor,
-        elevation: 0,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: ''),
-        ],
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        child: GNav(
+          backgroundColor: Colors.white,
+          color: Colors.grey,
+          activeColor: Theme.of(context).primaryColor,
+          tabBackgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+          onTabChange: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+          padding: const EdgeInsets.all(16),
+          tabs: const [
+            GButton(icon: Icons.home, text: "Home"),
+            GButton(icon: Icons.history, text: "History"),
+            GButton(icon: Icons.bar_chart, text: "Chart"),
+            GButton(icon: Icons.settings, text: "Settings"),
+          ],
+        ),
       ),
     );
   }

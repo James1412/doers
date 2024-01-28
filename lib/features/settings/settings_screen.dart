@@ -34,8 +34,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         shadowColor: Colors.white,
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
+        centerTitle: false,
         title: const Text(
           "Settings",
+          style: TextStyle(fontSize: 24),
         ),
       ),
       body: Column(
