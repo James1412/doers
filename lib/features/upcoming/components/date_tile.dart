@@ -227,9 +227,9 @@ class _DateTileState extends State<DateTile> {
                                 SlidableAction(
                                   backgroundColor: Colors.red,
                                   onPressed: (value) {
-                                    setState(() {
-                                      widget.dateTile.events.remove(event);
-                                    });
+                                    context
+                                        .read<DateListProvider>()
+                                        .removeEvent(event);
                                   },
                                   icon: Icons.delete,
                                 ),

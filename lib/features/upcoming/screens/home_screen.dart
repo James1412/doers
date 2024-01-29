@@ -17,6 +17,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  //TODO: Change this
+  bool showAd = false;
   void onAccept(
       DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
     context.read<DateListProvider>().onAccept(receivedData, dateTile);
@@ -161,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                if (_ad != null)
+                if (_ad != null && showAd)
                   Container(
                     height: _ad!.size.height.toDouble(),
                     width: _ad!.size.width.toDouble(),

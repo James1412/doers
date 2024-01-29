@@ -23,6 +23,9 @@ class _ChartScreenState extends State<ChartScreen> {
     return await context.read<DateListProvider>().onCheckTap(event);
   }
 
+  //TODO: Change this
+  bool showAd = false;
+
   @override
   void initState() {
     super.initState();
@@ -184,7 +187,7 @@ class _ChartScreenState extends State<ChartScreen> {
                             ),
                           ),
                         ),
-                  if (_ad != null)
+                  if (_ad != null && showAd)
                     Container(
                       width: _ad!.size.width.toDouble(),
                       height: _ad!.size.height.toDouble(),

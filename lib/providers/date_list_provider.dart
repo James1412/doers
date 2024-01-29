@@ -64,16 +64,17 @@ class DateListProvider extends ChangeNotifier {
 
   void removeEvent(ToDoTileModel event) {
     for (DateTileModel date in dateList) {
-      if (getDate(date.date) == getDate(event.date)) {
+      if (getNoTimeDate(date.date) == getNoTimeDate(event.date)) {
         date.events.remove(event);
-        List<Map<String, dynamic>> dateJson = [];
-        for (DateTileModel date in dateList) {
-          dateJson.add(date.toJson());
-        }
-        dateListRepo.updateTiles(dateJson);
-        notifyListeners();
+        print("dleted");
       }
     }
+    List<Map<String, dynamic>> dateJson = [];
+    for (DateTileModel date in dateList) {
+      dateJson.add(date.toJson());
+    }
+    dateListRepo.updateTiles(dateJson);
+    notifyListeners();
   }
 
   void onSubmittedTap(
