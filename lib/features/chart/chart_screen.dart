@@ -24,7 +24,7 @@ class _ChartScreenState extends State<ChartScreen> {
   }
 
   //TODO: Change this
-  bool showAd = false;
+  bool showAd = true;
 
   @override
   void initState() {

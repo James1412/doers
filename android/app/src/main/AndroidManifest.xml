@@ -4,6 +4,9 @@
         android:label="Doers"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <meta-data
+                android:name="com.google.android.gms.ads.APPLICATION_ID"
+                android:value="ca-app-pub-3496653110999581~3458369408"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -20,9 +23,6 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-            <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3496653110999581~3458369408"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

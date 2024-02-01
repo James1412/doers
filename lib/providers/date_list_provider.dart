@@ -66,7 +66,6 @@ class DateListProvider extends ChangeNotifier {
     for (DateTileModel date in dateList) {
       if (getNoTimeDate(date.date) == getNoTimeDate(event.date)) {
         date.events.remove(event);
-        print("dleted");
       }
     }
     List<Map<String, dynamic>> dateJson = [];

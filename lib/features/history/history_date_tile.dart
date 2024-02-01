@@ -227,9 +227,9 @@ class _HistoryDateTileState extends State<HistoryDateTile> {
                                 SlidableAction(
                                   backgroundColor: Colors.red,
                                   onPressed: (value) {
-                                    setState(() {
-                                      widget.dateTile.events.remove(event);
-                                    });
+                                    context
+                                        .read<DateListProvider>()
+                                        .removeEvent(event);
                                   },
                                   icon: Icons.delete,
                                 ),

@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   //TODO: Change this
-  bool showAd = false;
+  bool showAd = true;
   void onAccept(
       DragTargetDetails<ToDoTileModel> receivedData, DateTileModel dateTile) {
     context.read<DateListProvider>().onAccept(receivedData, dateTile);
