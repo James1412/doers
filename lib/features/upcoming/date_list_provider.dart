@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:doers/models/date_tile_model.dart';
-import 'package:doers/models/todo_tile_model.dart';
-import 'package:doers/repos/date_list_repo.dart';
+import 'package:doers/features/upcoming/date_tile_model.dart';
+import 'package:doers/features/upcoming/todo_tile_model.dart';
+import 'package:doers/features/upcoming/date_list_repo.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

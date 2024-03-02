@@ -1,6 +1,6 @@
 import 'package:doers/features/settings/instruction_screen.dart';
-import 'package:doers/providers/color_provider.dart';
-import 'package:doers/providers/notification_provider.dart';
+import 'package:doers/features/settings/color_provider.dart';
+import 'package:doers/features/notification/notification_provider.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,11 +70,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   inactiveTrackColor: Colors.grey.shade100,
                   activeColor: Theme.of(context).primaryColor,
                   value: !isNotificationOn,
-                  onChanged: (val) => isNotificationOn
-                      ? context
-                          .read<NotificationProvider>()
-                          .cancelNotifications()
-                      : context.read<NotificationProvider>().setNotifications(),
+                  onChanged: (val) => context
+                      .read<NotificationProvider>()
+                      .toggleNotifications(val),
                 ),
               ),
               title: const Text(

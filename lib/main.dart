@@ -1,7 +1,7 @@
 import 'package:doers/box_name.dart';
-import 'package:doers/providers/color_provider.dart';
-import 'package:doers/providers/date_list_provider.dart';
-import 'package:doers/providers/notification_provider.dart';
+import 'package:doers/features/settings/color_provider.dart';
+import 'package:doers/features/upcoming/date_list_provider.dart';
+import 'package:doers/features/notification/notification_provider.dart';
 import 'package:doers/features/navigation/navigation_screen.dart';
 import 'package:doers/features/notification/notification_service.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +13,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox(dateListBox);
   await Hive.openBox(colorBoxName);
+  await Hive.openBox(notiBoxName);
   await NotificationService().initNotification();
   runApp(
     MultiProvider(
@@ -40,12 +41,6 @@ class DoersApp extends StatefulWidget {
 }
 
 class _DoersAppState extends State<DoersApp> {
-  @override
-  void initState() {
-    context.read<NotificationProvider>().setNotifications();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

@@ -1,4 +1,4 @@
-import 'package:doers/models/todo_tile_model.dart';
+import 'package:doers/features/upcoming/todo_tile_model.dart';
 
 class DateTileModel {
   late DateTime date;

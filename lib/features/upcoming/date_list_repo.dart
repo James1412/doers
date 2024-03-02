@@ -1,5 +1,5 @@
 import 'package:doers/box_name.dart';
-import 'package:doers/models/date_tile_model.dart';
+import 'package:doers/features/upcoming/date_tile_model.dart';
 import 'package:doers/utils.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

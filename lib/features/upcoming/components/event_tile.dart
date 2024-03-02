@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 import 'package:animated_line_through/animated_line_through.dart';
-import 'package:doers/models/date_tile_model.dart';
-import 'package:doers/models/todo_tile_model.dart';
-import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/features/upcoming/date_tile_model.dart';
+import 'package:doers/features/upcoming/todo_tile_model.dart';
+import 'package:doers/features/upcoming/date_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:like_button/like_button.dart';

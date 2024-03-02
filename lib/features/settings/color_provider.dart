@@ -1,4 +1,4 @@
-import 'package:doers/repos/color_repo.dart';
+import 'package:doers/features/settings/color_repo.dart';
 import 'package:flutter/material.dart';
 
 class ColorProvider extends ChangeNotifier {

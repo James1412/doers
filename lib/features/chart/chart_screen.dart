@@ -1,7 +1,7 @@
 import 'package:animated_line_through/animated_line_through.dart';
 import 'package:doers/features/admob/ad_helper.dart';
-import 'package:doers/models/todo_tile_model.dart';
-import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/features/upcoming/todo_tile_model.dart';
+import 'package:doers/features/upcoming/date_list_provider.dart';
 import 'package:doers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
