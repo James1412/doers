@@ -69,14 +69,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   inactiveThumbColor: Colors.grey,
                   inactiveTrackColor: Colors.grey.shade100,
                   activeColor: Theme.of(context).primaryColor,
-                  value: !isNotificationOn,
+                  value: isNotificationOn,
                   onChanged: (val) => context
                       .read<NotificationProvider>()
                       .toggleNotifications(val),
                 ),
               ),
               title: const Text(
-                "Turn off notifications",
+                "Notifications",
                 style: TextStyle(fontSize: 17),
               ),
             ),

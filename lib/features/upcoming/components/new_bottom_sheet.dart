@@ -1,4 +1,4 @@
-import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/features/upcoming/date_list_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

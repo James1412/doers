@@ -9,6 +9,6 @@ class NotificationRepo {
   }
 
   bool getNoti() {
-    return notiBox.get(notiBoxName) ?? true;
+    return notiBox.get(notiBoxName) ?? false;
   }
 }

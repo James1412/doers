@@ -1,8 +1,8 @@
 import 'package:doers/features/upcoming/components/event_tile.dart';
 import 'package:doers/features/upcoming/components/proxy_decoration.dart';
-import 'package:doers/models/date_tile_model.dart';
-import 'package:doers/models/todo_tile_model.dart';
-import 'package:doers/providers/date_list_provider.dart';
+import 'package:doers/features/upcoming/date_tile_model.dart';
+import 'package:doers/features/upcoming/todo_tile_model.dart';
+import 'package:doers/features/upcoming/date_list_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
